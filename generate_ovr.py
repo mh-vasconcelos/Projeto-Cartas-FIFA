@@ -4,7 +4,7 @@ from func import load_artists
 # Gerador de overall, especificando os pesos para cada role
 def ovr_singer(line):
     ovr = (line['COM'] * 0.3) + (line['TEC'] * 0.25) + (line['CAR'] * 0.2) + (line['ENA'] * 0.1) + (line['ARR'] * 0.1) + (line['CON'] * 0.05)
-    return int(round(ovr,0))
+    return int(round(ovr, 0))
 
 def ovr_guitar(line):    
     ovr = (line['TEC'] * 0.3) + (line['ARR'] * 0.25) + (line['CAR'] * 0.15) + (line['COM'] * 0.15) + (line['ENA'] * 0.1) + (line['CON'] * 0.05)
@@ -12,7 +12,7 @@ def ovr_guitar(line):
 
 def ovr_drum(line):
     ovr = (line['TEC'] * 0.35) + (line['ENA'] * 0.2) + (line['ARR'] * 0.2) + (line['CAR'] * 0.1) + (line['CON'] * 0.1) + (line['COM'] * 0.05)
-    return int(round(ovr))
+    return int(round(ovr,0))
 
 def ovr_bass(line):
     ovr = (line['ARR'] * 0.3) + (line['TEC'] * 0.25) + (line['CON'] * 0.15) + (line['COM'] * 0.15) + (line['ENA'] * 0.1) + (line['CAR'] * 0.05)
@@ -27,10 +27,10 @@ def ovr(json_file):
     # calcula ovr dos novos
     for artist in novos:
         if artist['role'] == 'Drummer':
-            artist['OVR'] = ovr_drum(artist)
+            artist['OVR'] = int(ovr_drum(artist))
             artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
         elif artist['role'] == 'Singer':
-            artist['OVR'] = ovr_singer(artist)
+            artist['OVR'] = int(ovr_singer(artist))
             artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
         elif artist['role'] == 'Bassist':
             artist['OVR'] = ovr_bass(artist)

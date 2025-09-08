@@ -1,5 +1,5 @@
 import streamlit as st
-from func import load_artists, generate_card_mvp
+from func import load_artists, generate_card_svg
 from generate_ovr import ovr
 import json
 import random
@@ -18,18 +18,16 @@ def main():
         # 1. Crie 3 colunas. As duas das pontas servirão de espaçamento.
         col1, col2, col3 = st.columns(3)
         with col2:
-          card_img = generate_card_mvp(artist)
+          card_img = generate_card_svg(artist)
           st.image(card_img, caption="Sua carta gerada", use_column_width=False, width=350)
 
         # Salvar imagem temporária para download
-        card_img.save("temp_card.png")
-        with open("temp_card.png", "rb") as f:
-            st.download_button(
-                label="⬇️ Baixar Carta",
-                data=f,
-                file_name=f"{artist['nome'].replace(' ', '_')}.png",
-                mime="image/png"
-            )
+        st.download_button(
+        label="Baixar Carta SVG",
+        data=card_img.encode('utf-8'),  # Ponto chave: A string SVG precisa ser codificada para bytes
+        file_name=f"{artist['nome']}.svg", # Nome do arquivo que o usuário vai baixar
+        mime="image/svg+xml"  # Informa ao navegador que é um arquivo SVG
+        )
 
 if __name__ == "__main__":
     main()
