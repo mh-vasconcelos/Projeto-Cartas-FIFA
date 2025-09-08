@@ -1,0 +1,80 @@
+[
+    {
+        "nome": "John Lennon",
+        "role": "Singer",
+        "country": "United Kingdom",
+        "ENA": 92,
+        "COM": 95,
+        "ARR": 88,
+        "TEC": 85,
+        "CON": 90,
+        "CAR": 97,
+        "OVR": 92.0,
+        "timestamp": "05/09/25 13:34:15"
+    },
+    {
+        "nome": "Neil Peart",
+        "role": "Drummer",
+        "country": "Canada",
+        "ENA": 96,
+        "COM": 82,
+        "ARR": 91,
+        "TEC": 99,
+        "CON": 95,
+        "CAR": 88,
+        "OVR": 94.0,
+        "timestamp": "05/09/25 13:34:15"
+    },
+    {
+        "nome": "Liam Gallagher",
+        "role": "Singer",
+        "country": "United Kingdom",
+        "ENA": 83,
+        "COM": 77,
+        "ARR": 70,
+        "TEC": 92,
+        "CON": 83,
+        "CAR": 89,
+        "OVR": 83.0,
+        "timestamp": "05/09/25 13:34:15"
+    },
+    {
+        "nome": "Paul McCartney",
+        "role": "Bassist",
+        "country": "United Kingdom",
+        "ENA": 89,
+        "COM": 95,
+        "ARR": 90,
+        "TEC": 90,
+        "CON": 87,
+        "CAR": 90,
+        "OVR": 90,
+        "timestamp": "08/09/25 13:24:52"
+    },
+    {
+        "nome": "George Harrison",
+        "role": "Guitarrist",
+        "country": "United Kingdom",
+        "ENA": 82,
+        "COM": 92,
+        "ARR": 90,
+        "TEC": 90,
+        "CON": 89,
+        "CAR": 82,
+        "OVR": 88,
+        "timestamp": "08/09/25 13:24:52"
+    },
+    {
+        "nome": "Ringo Starr",
+        "role": "Drummer",
+        "country": "United Kingdom",
+        "ENA": 82,
+        "COM": 65,
+        "ARR": 75,
+        "TEC": 87,
+        "CON": 88,
+        "CAR": 85,
+        "OVR": 82,
+        "timestamp": "08/09/25 13:24:52"
+    }
+]

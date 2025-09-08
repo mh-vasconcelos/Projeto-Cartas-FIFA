@@ -1,0 +1,42 @@
+[    
+  {
+        "nome": "Paul McCartney",
+        "role": "Bassist",
+        "country": "United Kingdom",
+        "ENA": 89,
+        "COM": 95,
+        "ARR": 90,
+        "TEC": 90,
+        "CON": 87,
+        "CAR": 90,
+        "OVR": 0,
+        "timestamp": 0
+    },
+    {
+        "nome": "George Harrison",
+        "role": "Guitarrist",
+        "country": "United Kingdom",
+        "ENA": 82,
+        "COM": 92,
+        "ARR": 90,
+        "TEC": 90,
+        "CON": 89,
+        "CAR": 82,
+        "OVR": 0,
+        "timestamp": 0
+    },
+            {
+        "nome": "Ringo Starr",
+        "role": "Drummer",
+        "country": "United Kingdom",
+        "ENA": 82,
+        "COM": 65,
+        "ARR": 75,
+        "TEC": 87,
+        "CON": 88,
+        "CAR": 85,
+        "OVR": 0,
+        "timestamp": 0
+    }
+
+]

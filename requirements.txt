@@ -1,0 +1,11 @@
+# Web framework
+streamlit==1.36.0
+
+# Manipulação de imagens (Pillow) – opcional, se você quiser versão minimal
+Pillow==10.2.0
+
+# Converter SVG para PNG (caso use os templates SVG)
+cairosvg==2.7.0
+
+pandas==2.2.2
+
