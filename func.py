@@ -60,7 +60,5 @@ def generate_card_svg(artist):
     # svg_to_png(svg_filled, output_path=f"{artist['nome'].replace(' ','_')}.png")
     return SVG_TOTAL  # opcional: exibir / salvar SVG também
 
-print(generate_card_svg(load_artists()[5]))
-
 
 

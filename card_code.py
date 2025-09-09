@@ -118,3 +118,39 @@ SVG_TEMPLATE="""
     </g> </g> </svg>
 """
 
+
+
+DARK_MODE_CSS = """
+<style>
+/* Força fundo escuro da aplicação e texto claro */
+:root, .stApp, .css-1d391kg { background: #0b1020 !important; color: #e6eef8 !important; }
+
+/* Ajustes de containers e blocks */
+main .block-container { background: transparent !important; }
+
+/* Garantir que textos e headers fiquem claros */
+h1, h2, h3, h4, .css-18e3th9 { color: #ffffff !important; }
+
+/* Botões com contraste leve: texto forte e opacidade total */
+.stButton>button {
+  background: linear-gradient(90deg,#f59e0b,#facc15) !important;
+  color: #081022 !important;          /* cor do texto do botão */
+  opacity: 1 !important;               /* remove transparência indesejada */
+  filter: none !important;
+  text-shadow: none !important;
+  font-weight: 700;
+}
+
+
+/* Inputs / sidebar background */
+[data-testid="stSidebar"] { background-color: #071024 !important; color: #e6eef8 !important; }
+
+/* Evita que cards brancos apareçam muito agressivos */
+.css-1offfwp, .css-1v0mbdj { background: rgba(255,255,255,0.02) !important; }
+
+/* Pequeno ajuste para imagens/svg centralizados */
+.card-preview { background: transparent !important; }
+</style>
+"""
+
+
