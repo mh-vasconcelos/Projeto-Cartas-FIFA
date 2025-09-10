@@ -1,5 +1,4 @@
 import json
-# import cairosvg
 from card_code import SVG_TEMPLATE, SVG_INICIAL
 import random
 
@@ -9,9 +8,7 @@ def load_artists(file_path="artists.json"):
         return json.load(f)
 
 
-# def svg_to_png(svg_str, output_path="card.png"):
-#     cairosvg.svg2png(bytestring=svg_str.encode('utf-8'), write_to=output_path)
-
+# --- Função para gerar o SVG do artista ---
 def generate_card_svg(artist):
     svg_filled = SVG_TEMPLATE.format(
         NAME=artist['nome'],
@@ -30,6 +27,7 @@ def generate_card_svg(artist):
     return SVG_TOTAL  # opcional: exibir / salvar SVG também
 
 
+# --- Função para selecionar a banda aleatoriamente ---
 def pick_band(artists):
     """
     Seleciona uma banda com 1 vocal, 1 guitarra, 1 baixo e 1 bateria.
@@ -45,5 +43,4 @@ def pick_band(artists):
             pick = random.choice(candidates)
             band.append(pick)
             pool.remove(pick)
-        
     return band

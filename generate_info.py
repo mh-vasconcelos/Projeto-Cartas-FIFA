@@ -1,9 +1,12 @@
+# --- Arquivo que definir como atribuir as notas aos artistas e (opcional) chamar o RPA de imagem ---
+
+
 import json
 from datetime import datetime as dt
 from func import load_artists
 from rpa import search_img
 
-# Gerador de overall, especificando os pesos para cada role
+# --- Gerador de overall, especificando os pesos para cada role ---
 def ovr_singer(line):
     ovr = (line['COM'] * 0.3) + (line['TEC'] * 0.25) + (line['CAR'] * 0.2) + (line['ENA'] * 0.1) + (line['ARR'] * 0.1) + (line['CON'] * 0.05)
     return int(round(ovr, 0))
@@ -20,12 +23,13 @@ def ovr_bass(line):
     ovr = (line['ARR'] * 0.3) + (line['TEC'] * 0.25) + (line['CON'] * 0.15) + (line['COM'] * 0.15) + (line['ENA'] * 0.1) + (line['CAR'] * 0.05)
     return int(round(ovr, 0))
 
+# --- função que normaliza as funções (letras minusculas e com strip) ---
 def _role_key(role):
     """Normaliza a role para comparação (tolerante a variações)."""
     if not role:
         return ""
     r = role.strip().lower()
-    if r.startswith("guita"):  # cobre 'Guitarist' e 'Guitarrist'
+    if r.startswith("guita"): 
         return "guitarist"
     if r.startswith("drum"):
         return "drummer"
@@ -35,6 +39,7 @@ def _role_key(role):
         return "singer"
     return r
 
+# --- Função que calcula o overall com base no role/função
 def _calc_ovr_for(artist):
     role = _role_key(artist.get("role", ""))
     if role == "drummer":
@@ -45,10 +50,12 @@ def _calc_ovr_for(artist):
         return ovr_bass(artist)
     if role == "guitarist":
         return ovr_guitar(artist)
+    
     # fallback: média simples
     vals = [artist.get(k, 0) for k in ("COM","TEC","CAR","ENA","ARR","CON")]
     return int(round(sum(vals)/len(vals))) if vals else 0
 
+# --- Função que vai buscar os dados do artista e imagem do mesmo (caso img_flag = True)
 def _get_img_for(artist, img_flag=True):
     if not img_flag:
         return artist.get("img", 0)
@@ -60,6 +67,7 @@ def _get_img_for(artist, img_flag=True):
             return artist.get("img", 0)
     return artist.get("img")
 
+# --- Função que vai centralizar toda a lógica das funções anteriores ---
 def ovr_img(json_file, img=True, artists_file='artists.json'):
     # carrega novos (pode vir lista ou lista de listas)
     novos = load_artists(file_path=json_file) or []

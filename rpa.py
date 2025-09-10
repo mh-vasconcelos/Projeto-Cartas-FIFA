@@ -1,3 +1,5 @@
+# --- Arquivo que vai definir os critérios do driver do RPA e a função de RPA ---
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
@@ -15,7 +17,8 @@ options.add_experimental_option("detach", True)
 service = ChromeService("chromedriver.exe", options=options) 
 
 driver = webdriver.Chrome(service=service, options=options)
-# Função que vai procurar a imagem automaticamente no google
+
+# --- Função que chama o robô para procurar imagens dos artistas ---
 def search_img(nome_artista):
     query = nome_artista.replace(" ", "+") + "+musician"
     driver.get(f"https://www.google.com/search?tbm=isch&q={query}")
@@ -29,6 +32,7 @@ def search_img(nome_artista):
 
         # Pega o src da imagem maior
         url = driver.find_element(By.XPATH, '//img[@class="YQ4gaf"]').get_attribute("src")
+        driver.quit()
         return url
     except:
         return None

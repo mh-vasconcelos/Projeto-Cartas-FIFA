@@ -124,6 +124,16 @@ SVG_TEMPLATE="""
             >
         {BAND}
         </text>
+
+
+        <text
+           id="artist_role"
+           x="105"
+           y="75"
+           style="font-size:8px; font-family:Arial; fill:#000000; text-anchor:middle; font-weight:normal;"
+           >
+           {ROLE}
+       </text>
     </g> </g> </svg>
 """
 
