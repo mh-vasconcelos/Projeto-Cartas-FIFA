@@ -27,7 +27,7 @@ def main():
 
     # Contêiner 2: Gerador de Cartas para banda
     with st.container(border=True):
-        st.header("Gere sua Banda")   
+        st.header("Gerar Banda")   
         # Botão para gerar artista aleatório
         if st.button("Gerar Cartas Aleatórias", use_container_width=True):
             artists = load_artists()
@@ -65,7 +65,7 @@ def main():
               
     # Container 3: gerador de carta única para download
     with st.container(border=True):
-      st.header("Gerador")
+      st.header("Gerar o Artista")
       
       # Botão para gerar artista aleatório
       if st.button("Gerar Carta Aleatória", use_container_width=True):

@@ -51,8 +51,8 @@ SVG_TEMPLATE="""
        
        <text
            id="artist_name"
-           x="130"
-           y="200"
+           x="105"
+           y="210"
            style="font-size:10px; font-family:Arial; fill:#000000; text-anchor:middle; font-weight:bold;"
            >
            {OVR}
@@ -114,6 +114,15 @@ SVG_TEMPLATE="""
             style="font-size:6px; font-family:Arial; fill:#000000; text-anchor:middle; font-weight:normal;"
             >
     CON: {CON}
+        </text>
+                
+        <text
+            id="artist_band"
+            x="104"
+            y="200"
+            style="font-size:6px; font-family:Arial; fill:#000000; text-anchor:middle; font-weight:bold;"
+            >
+        {BAND}
         </text>
     </g> </g> </svg>
 """

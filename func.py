@@ -17,6 +17,7 @@ def generate_card_svg(artist):
         NAME=artist['nome'],
         ROLE=artist.get('role',''),
         COUNTRY=artist.get('country',''),
+        BAND=artist['band'],
         ENA=artist['ENA'], COM=artist['COM'],
         ARR=artist['ARR'], TEC=artist['TEC'],
         CON=artist['CON'], CAR=artist['CAR'],

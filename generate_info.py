@@ -8,71 +8,125 @@ def ovr_singer(line):
     ovr = (line['COM'] * 0.3) + (line['TEC'] * 0.25) + (line['CAR'] * 0.2) + (line['ENA'] * 0.1) + (line['ARR'] * 0.1) + (line['CON'] * 0.05)
     return int(round(ovr, 0))
 
-def ovr_guitar(line):    
+def ovr_guitar(line):
     ovr = (line['TEC'] * 0.3) + (line['ARR'] * 0.25) + (line['CAR'] * 0.15) + (line['COM'] * 0.15) + (line['ENA'] * 0.1) + (line['CON'] * 0.05)
-    return int(round(ovr,0))
+    return int(round(ovr, 0))
 
 def ovr_drum(line):
     ovr = (line['TEC'] * 0.35) + (line['ENA'] * 0.2) + (line['ARR'] * 0.2) + (line['CAR'] * 0.1) + (line['CON'] * 0.1) + (line['COM'] * 0.05)
-    return int(round(ovr,0))
+    return int(round(ovr, 0))
 
 def ovr_bass(line):
     ovr = (line['ARR'] * 0.3) + (line['TEC'] * 0.25) + (line['CON'] * 0.15) + (line['COM'] * 0.15) + (line['ENA'] * 0.1) + (line['CAR'] * 0.05)
-    return int(round(ovr,0))
+    return int(round(ovr, 0))
 
-def url_img(artist):
-    if artist.get('img') == 0:
-        url = search_img(artist['nome'])
-    else:
-        return artist.get('img')  
-    return url
+def _role_key(role):
+    """Normaliza a role para comparação (tolerante a variações)."""
+    if not role:
+        return ""
+    r = role.strip().lower()
+    if r.startswith("guita"):  # cobre 'Guitarist' e 'Guitarrist'
+        return "guitarist"
+    if r.startswith("drum"):
+        return "drummer"
+    if r.startswith("bass"):
+        return "bassist"
+    if r.startswith("sing"):
+        return "singer"
+    return r
 
-# Gerador de overall geral (olha para todos os dados do json) e imagem, se necessário
-def ovr_img(json_file, img=True):
+def _calc_ovr_for(artist):
+    role = _role_key(artist.get("role", ""))
+    if role == "drummer":
+        return ovr_drum(artist)
+    if role == "singer":
+        return ovr_singer(artist)
+    if role == "bassist":
+        return ovr_bass(artist)
+    if role == "guitarist":
+        return ovr_guitar(artist)
+    # fallback: média simples
+    vals = [artist.get(k, 0) for k in ("COM","TEC","CAR","ENA","ARR","CON")]
+    return int(round(sum(vals)/len(vals))) if vals else 0
 
-    novos = load_artists(file_path=json_file)
-    # calcula ovr dos novos
-    if novos:
-        for artist in novos:
-            if artist['role'] == 'Drummer':
-                artist['OVR'] = int(ovr_drum(artist))
-                artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
+def _get_img_for(artist, img_flag=True):
+    if not img_flag:
+        return artist.get("img", 0)
+    if not artist.get("img") or artist.get("img") == 0:
+        try:
+            return search_img(artist['nome'])
+        except Exception as e:
+            print(f"Erro ao buscar imagem para {artist.get('nome')}: {e}")
+            return artist.get("img", 0)
+    return artist.get("img")
 
-            elif artist['role'] == 'Singer':
-                artist['OVR'] = int(ovr_singer(artist))
-                artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
+def ovr_img(json_file, img=True, artists_file='artists.json'):
+    # carrega novos (pode vir lista ou lista de listas)
+    novos = load_artists(file_path=json_file) or []
 
-            elif artist['role'] == 'Bassist':
-                artist['OVR'] = ovr_bass(artist)
-                artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
+    # achata caso load_artists retorne [[...]]
+    if novos and isinstance(novos[0], list):
+        flat = []
+        for sub in novos:
+            if isinstance(sub, list):
+                flat.extend(sub)
+            else:
+                flat.append(sub)
+        novos = flat
 
-            elif artist['role'] == 'Guitarist':
-                artist['OVR'] = ovr_guitar(artist)
-                artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
-            if img:
-                artist['img'] = search_img(artist['nome'])
+    # calcula OVR e busca imagem
+    for artist in novos:
+        if not isinstance(artist, dict):
+            continue
+        artist['role'] = artist.get('role', '').strip()
+        artist['OVR'] = int(_calc_ovr_for(artist))
+        artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
+        if img:
+            artist['img'] = _get_img_for(artist, img_flag=img)
 
-    # carrega já existentes
-    with open('artists.json', 'r') as arquivo:
-        artists = json.load(arquivo)
+    # carrega já existentes, criando se necessário
+    try:
+        with open(artists_file, 'r', encoding='utf-8') as f:
+            artists = json.load(f)
+            if not isinstance(artists, list):
+                artists = []
+    except FileNotFoundError:
+        artists = []
 
-    # cria set com nomes já existentes
-    existing_names = {a['nome'] for a in artists}
+    # cria mapa (nome+role normalizados) -> índice em artists
+    index_map = {}
+    for i, a in enumerate(artists):
+        key = (a.get('nome','').strip().lower(), _role_key(a.get('role','')))
+        index_map[key] = i
 
-    # adiciona apenas os que não são duplicados
+    added = 0
+    updated = 0
+
     for new_artist in novos:
-        if new_artist['nome'] not in existing_names:
+        if not isinstance(new_artist, dict):
+            continue
+        key = (new_artist.get('nome','').strip().lower(), _role_key(new_artist.get('role','')))
+        if key in index_map:
+            # atualiza o registro existente (sobrescreve campos do existente)
+            idx = index_map[key]
+            # opcional: mesclar em vez de sobrescrever totalmente
+            artists[idx].update(new_artist)
+            updated += 1
+        else:
             artists.append(new_artist)
+            index_map[key] = len(artists) - 1
+            added += 1
 
     # salva de volta
-    with open('artists.json', 'w') as arquivo:
-        json.dump(artists, arquivo, indent=4)
+    with open(artists_file, 'w', encoding='utf-8') as f:
+        json.dump(artists, f, indent=4, ensure_ascii=False)
 
-    # Limpa o JSON original (apaga conteúdo)
-    with open(json_file, 'w') as arquivo:
-        json.dump([], arquivo, indent=4)
+    # limpa o JSON original (apaga conteúdo)
+    with open(json_file, 'w', encoding='utf-8') as f:
+        json.dump([], f, indent=4, ensure_ascii=False)
 
+    print(f"Adicionados: {added} | Atualizados: {updated} | Total final em {artists_file}: {len(artists)}")
     return artists if novos else []
 
 if __name__ == "__main__":
-    ovr_img("artists_to_add.json", img=False)
+    ovr_img("artists_to_add.json", img=True)
