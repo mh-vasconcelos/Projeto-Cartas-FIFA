@@ -44,7 +44,7 @@ def main():
     with st.container(border=True):
         # A função ovr() estava aqui, mantive o lugar.
         st.title("Cartas Musicais 🎸🎤🥁")
-        st.subheader("Gere aleatoriamente uma carta de um artista foda no estilo Fifa Ultimate Team")
+        st.subheader("Gere aleatoriamente uma carta de um músico no estilo Fifa Ultimate Team")
     st.markdown("<br>", unsafe_allow_html=True)
 
     # Contêiner 2: Gerador de Cartas para banda
@@ -82,6 +82,7 @@ def main():
             with col2:
                 card_img = svgs[1] if len(svgs) > 1 else generate_card_svg(banda[1])
                 st.image(card_img)
+
             with col3:
                 card_img = svgs[2] if len(svgs) > 2 else generate_card_svg(banda[2])
                 st.image(card_img)
