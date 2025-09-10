@@ -17,7 +17,7 @@ def main():
     st.markdown(DARK_MODE_CSS, unsafe_allow_html=True)
 
     # -----------------------
-    # Inicialização do session_state (adicionado)
+    # Inicialização do session_state
     # -----------------------
     # Banda persistida (lista de artistas), SVGs e hrefs base64
     if "band_artists" not in st.session_state:
@@ -93,7 +93,6 @@ def main():
     # Container 3: gerador de carta única para download
     with st.container(border=True):
       st.header("Gerar o Artista")
-      
       # Botão para gerar artista aleatório
       if st.button("Gerar Carta Aleatória"):
           artists = load_artists()

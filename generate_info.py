@@ -1,6 +1,4 @@
 # --- Arquivo que definir como atribuir as notas aos artistas e (opcional) chamar o RPA de imagem ---
-
-
 import json
 from datetime import datetime as dt
 from func import load_artists
@@ -55,10 +53,8 @@ def _calc_ovr_for(artist):
     vals = [artist.get(k, 0) for k in ("COM","TEC","CAR","ENA","ARR","CON")]
     return int(round(sum(vals)/len(vals))) if vals else 0
 
-# --- Função que vai buscar os dados do artista e imagem do mesmo (caso img_flag = True)
-def _get_img_for(artist, img_flag=True):
-    if not img_flag:
-        return artist.get("img", 0)
+# --- Função que vai buscar a imagem do artista chamando search_img
+def _get_img_for(artist):
     if not artist.get("img") or artist.get("img") == 0:
         try:
             return search_img(artist['nome'])
@@ -90,7 +86,7 @@ def ovr_img(json_file, img=True, artists_file='artists.json'):
         artist['OVR'] = int(_calc_ovr_for(artist))
         artist['timestamp'] = dt.now().strftime("%d/%m/%y %H:%M:%S")
         if img:
-            artist['img'] = _get_img_for(artist, img_flag=img)
+            artist['img'] = _get_img_for(artist)
 
     # carrega já existentes, criando se necessário
     try:
