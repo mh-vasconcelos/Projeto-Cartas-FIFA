@@ -121,7 +121,7 @@ def main():
           # Coluna do meio maior
           with col2:
               card_img = svg_to_show
-              st.image(card_img, caption="Sua carta gerada")
+              st.image(card_img)
             
           download_button_html = f'''
           <div style="display:flex; justify-content:center; margin-top:12px;">
